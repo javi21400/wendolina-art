@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VZQ</title>
+  <meta name="description" content="Decants Boutique: venta de decants de perfumes, información sobre qué es un decant, cómo comprar y cuidados.">
+  <link rel="icon" href="data:,">
+
+<style>
+  :root{
+    --accent:#BC8F8F;       /* Beige principal */
+    --accent-dark:#A07676;
+    --dark:#1f2230;
+    --muted:#6b7280;
+    --card:#ffffff;
+    --bg:#FFF5EE;           /* Fondo beige claro */
+    --glass: rgba(255,255,255,0.7);
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--dark);
+    line-height:1.45;
+    scroll-behavior:smooth;   /* scroll suave por defecto (útil si JS falla) */
+  }
+  a{color:var(--accent);text-decoration:none}
+
+  header{
+    backdrop-filter:blur(6px);
+    background:rgba(255,255,255,0.4);
+    border-bottom:1px solid rgba(0,0,0,0.05);
+    position:sticky;
+    top:0;
+    z-index:50;
+  }
+
+  .container{max-width:1100px;margin:0 auto;padding:24px}
+
+  /* Navbar */
+  .nav{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+  }
+
+  .brand{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    text-align:center;
+  }
+
+  .logo{
+    width:68px;height:68px;border-radius:8px;
+    background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700
+  }
+
+  nav ul{
+    display:flex;
+    gap:20px;
+    list-style:none;
+    margin:0;padding:0;
+    justify-content:center;
+  }
+
+  /* Botones del navbar */
+  nav ul li a{
+    padding:10px 16px;
+    border-radius:10px;
+    background: var(--accent);
+    color:white;
+    font-weight:600;
+    transition:all .25s;
+    display:inline-block;
+  }
+
+  nav ul li a:hover{
+    background:var(--accent-dark);
+    transform:scale(1.04);
+  }
+
+  nav ul li a:active{
+    transform:scale(.95);
+  }
+
+  /* Hero */
+  .hero{
+    display:grid;
+    grid-template-columns:1fr 420px;
+    gap:28px;
+    align-items:center;
+    padding:48px 0
+  }
+  .hero h1{font-size:36px;margin:0 0 12px}
+  .hero p{color:var(--muted);margin:0 0 18px}
+  .preview{
+    height:260px;border-radius:10px;
+    background:#efe7db;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--muted);
+    border:1px dashed #d6cbbd
+  }
+
+  /* About */
+  .about{
+    display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start
+  }
+  .card{
+    background:var(--card);
+    padding:18px;border-radius:12px;
+    box-shadow:0 8px 30px rgba(32,33,36,0.05)
+  }
+
+  /* Products */
+  section{padding:34px 0}
+  h2{margin:0 0 12px}
+  .grid{display:grid;gap:18px}
+
+  .products{grid-template-columns:repeat(3,1fr)}
+
+  .product{
+    background:var(--card);
+    padding:14px;border-radius:12px;
+    border:1px solid #e8e2d3;
+    display:flex;flex-direction:column;gap:12px
+  }
+  .product .img{
+    height:300px;border-radius:8px;
+    background:#f1e8d9;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--muted);
+    border:1px dashed #dfd4c3
+  }
+
+  .price{font-weight:700}
+  .small{font-size:13px;color:var(--muted)}
+
+  .btn{padding:10px;border-radius:10px;border:0;font-weight:600;cursor:pointer}
+  .btn-add{background:var(--accent);color:#fff}
+
+  /* FAQ */
+  .faq p{margin:8px 0;color:var(--muted)}
+
+  /* Contact */
+  form{display:grid;gap:10px}
+  input,textarea{
+    padding:10px;border-radius:8px;border:1px solid #e6e9ef
+  }
+  textarea{min-height:120px}
+
+  /* Footer */
+  footer{
+    padding:24px 0;
+    border-top:1px solid rgba(0,0,0,0.04);
+    color:var(--muted)
+  }
+
+  /* Responsive */
+  @media (max-width:960px){
+    .hero{grid-template-columns:1fr}
+    .about{grid-template-columns:1fr}
+    .products{grid-template-columns:repeat(2,1fr)}
+  }
+
+  @media (max-width:560px){
+    .products{grid-template-columns:1fr}
+    nav ul{display:flex;flex-wrap:wrap}
+    .hero h1{font-size:26px}
+  }
+
+  /* Pequeña transición para foco de destino (mejora visual) */
+  .section-target {
+    scroll-margin-top: 86px; /* respaldo si JS no compensa */
+  }
+
+</style>
+</head>
+
+<body>
+
+  <header id="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">
+          <img src="MOJE .jpeg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+        </div>
+        <div style="font-weight:700">Wendolina-Art</div>
+        <div class="small">Donde el caos se vuelve arte</div>
+      </div>
+
+      <!-- NAV centrado como botones -->
+      <nav>
+        <ul>
+          <!-- agrego data-target para accesibilidad/JS sin tocar texto -->
+          <li><a href="#about" data-target="about">Sobre Mi</a></li>
+          <li><a href="#productos" data-target="productos">Productos</a></li>
+          <li><a href="#compra" data-target="compra">Comprar</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <h1>Wendolina Art — Información sobre mis pinturas para venta🤍</h1>
+        <p>Conoce las pinturas que realizo, junto con sus características, sentimientos y fotos de las pinturas que he realizado.</p>
+      </div>
+
+      <div class="hero-card card">
+        <div class="img">
+          <img src="GATO OGO2png.png" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+        </div>
+      </div>
+    </section>
+
+
+    <!-- INFO LATERAL -->
+    <div class="about section-target" id="about">
+      <div class="card">
+        <h3>Hola❤</h3>
+        <ol class="small" style="padding-left:18px">
+          <h3>Hola❤, soy Wendy o Wendolina:) Desde muy niña me gusta dibujar y pintar.</h3>
+          <h3>Hago obras versatiles;pinto lo que amo, lo que me hace reir y lo que en mi alma se ve reflejada.</h3>
+          <h3>Gracias por apoyar mi trabajo🤍</h3>
+        </ol>
+        <hr style="border:none;border-top:1px dashed #e1d5c3;margin:12px 0">
+        <h2 style="margin:0">Conoce mis pinturas aqui abajo ⬇</h2>
+        <p class="small">*proceso de compra se hace via WhatsApp los precios no incluyen envio*</p>
+      </div>
+
+      <div class="card">
+        <h4>Características de las pinturas</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="small">Todas mis pinturas son hechas a mano</div><div class="price">✅</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="small">Son creadas al oleo con pintura de calidad</div><div class="price">✅</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="small">Todas las pinturas tienen un toque especial mio distinto</div><div class="price">✅</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- PRODUCTOS -->
+    <section id="productos" class="section-target">
+      <h2>Mis pinturas🤍</h2>
+      <p class="small">Dale un vistaso a mis pinturas :)</p>
+
+      <div class="grid products" style="margin-top:12px">
+
+        <article class="product">
+          <div class="img">
+          <img  src="gato pintura 1 .jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+          </div>
+          <div>
+            <div style="font-weight:700">Aqua Di Gio PROFUMO</div>
+            <div class="small">Marino • Fresco Especiado • Ambar</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="price">$80 MXN</div>
+              <div class="small">5 ml</div>
+            </div>
+            <button class="btn btn-add">Compra Ya</button>
+          </div>
+        </article>
+
+
+        <article class="product">
+          <div class="img">
+          <img  src="gato pintura2.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+          </div>
+          <div>
+            <div style="font-weight:700">Hawas For Him</div>
+            <div class="small">Cítrico • Acuatico</div>
+          </div>
+          <div   style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="price">$120 MXN - $150 MXN</div>
+              <div class="small">5 ml - 10 ml</div>
+            </div>
+            <button class="btn btn-add">Compra Ya</button>
+          </div>
+        </article>
+
+
+        <article class="product">
+          <div class="img">
+          <img  src="foto 3l.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+          </div>
+          <div>
+            <div style="font-weight:700">Jean Paul Gaultier Le Male Le Parfum</div>
+            <div class="small">Especiada • Cardomomo • Lavanda • Iris</div>
+          </div>
+          <div   style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="price">$200 MXN - $380 MXN</div>
+              <div class="small">5 ml - 10 ml</div>
+            </div>
+            <button class="btn btn-add">Compra Ya</button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- FAQ -->
+    <section id="faq" class="section-target">
+      <h2>Preguntas frecuentes</h2>
+
+      <div class="faq grid" style="grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
+        <div class="card">
+          <h3>¿Realizan pinturas personalizadas?</h3>
+          <p class="small">Claro, tambien hago obras por encargo, si tienes una idea, un animal especial o algo que te gudtaria ver en pintura podemos trabajrlos juntos.</p>
+          <p class="small">Mándame mensaje y lo platicamos 😊</p>
+        </div>
+
+        <div class="card">
+          <h3>¿realizan envios internacionales?</h3>
+          <p class="small">Por el momento solo nacional a mexico pero claro que pensamos en expadirnos🛫</p>
+        </div>
+
+        <div class="card">
+          <h3>¿cuanto es e tiempo de entrega?</h3>
+          <p class="small">el timepo de entrega puede ser de 1 semana a 2 semanas dependiendo la complegidad y detalle 🙌</p>
+        </div>
+
+        <div class="card">
+          <h3>¿Aceptan devoluciones?</h3>
+          <p class="small">Las pinturas no pueden ser devueltas ya que el cliente toma la decision y diseño de su pintura🤞</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO: se agregó para que el enlace #contacto funcione -->
+    
+
+  </main>
+
+  <!-- FOOTER / COMPRA -->
+   <h3 style="text-align: center;">CONTACTAME</h3>
+   <section id="compra" class="section-target">
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:18px">
+      <div>
+        <div style="font-weight:700">Wendolina-Art</div>
+        <div class="small">© 2025 • Todos los derechos reservados</div>
+      </div>
+      <div class="small">Términos • Privacidad • Envíos</div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:12px;justify-content:center">
+      <a href="https://www.facebook.com/share/1AJUosv8MF/?mibextid=wwXIfr" target="_blank" style="padding:10px 14px;border-radius:10px;background:#1877F2;color:#fff;font-weight:600">Facebook</a>
+
+      <a href="https://wa.me/528130918350" target="_blank" style="padding:10px 14px;border-radius:10px;background:#25D366;color:#fff;font-weight:600">
+        WhatsApp
+      </a>
+    </div>
+
+  </footer>
+  </section>
+
+<!-- Script: scroll suave con compensación de header -->
+<script>
+  (function(){
+    // Selecciona todos los enlaces internos del nav que apunten a anclas
+    const header = document.getElementById('site-header');
+    const headerHeight = () => header ? header.getBoundingClientRect().height : 0;
+
+    // Delegación: solo enlaces dentro del nav
+    const navLinks = document.querySelectorAll('nav ul li a[href^="#"]');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e){
+        // prevent anchor default jump
+        e.preventDefault();
+        const targetId = this.getAttribute('href').slice(1);
+        const target = document.getElementById(targetId);
+
+        if(!target) {
+          // si no existe, dejar comportamiento por defecto
+          location.hash = this.getAttribute('href');
+          return;
+        }
+
+        // Calcula la posición objetivo (compensando header sticky)
+        const rect = target.getBoundingClientRect();
+        const absoluteTop = window.pageYOffset + rect.top;
+        const offset = Math.ceil(headerHeight()) + 12; // 12px de margen adicional
+        const scrollTo = Math.max(0, absoluteTop - offset);
+
+        // Hacer scroll suave
+        window.scrollTo({
+          top: scrollTo,
+          behavior: 'smooth'
+        });
+
+        // actualizar hash en la URL sin saltos abruptos (usa history)
+        if(history.pushState) {
+          history.pushState(null, '', '#' + targetId);
+        } else {
+          // fallback
+          location.hash = '#' + targetId;
+        }
+
+        // opcional: mover foco al elemento para accesibilidad
+        target.setAttribute('tabindex', '-1');
+        target.focus({preventScroll:true});
+        // limpiar tabindex luego de un tiempo
+        setTimeout(()=> { target.removeAttribute('tabindex'); }, 1500);
+      });
+    });
+
+    // Si el usuario llega con un hash directo (ej: recarga con #productos), ajustar el offset
+    window.addEventListener('load', function(){
+      const hash = location.hash;
+      if(hash){
+        const id = hash.slice(1);
+        const el = document.getElementById(id);
+        if(el){
+          // pequeño timeout para que todo renderice
+          setTimeout(()=>{
+            const rect = el.getBoundingClientRect();
+            const absoluteTop = window.pageYOffset + rect.top;
+            const offset = Math.ceil(headerHeight()) + 12;
+            window.scrollTo({ top: Math.max(0, absoluteTop - offset), behavior: 'instant' });
+          }, 50);
+        }
+      }
+    });
+
+    // Recalcula en resize porque header puede cambiar de tamaño en móviles
+    window.addEventListener('resize', function(){ /* nada, headerHeight() es dinámico */ });
+
+  })();
+</script>
+
+</body>
+</html>
